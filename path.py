@@ -5,6 +5,8 @@ stretch_interval = ((1.5 ** 12) / (2.0 ** 7)) ** (1.0/7)
 stretch_interval
 1.0019377369015756
 
+stretch_octave = stretch_interval * 2
+
 inharmonicity_coefficient_ratio = lambda harmonic, coeff: harmonic * (1.0 + 0.5 * (harmonic ** 2 - 1) * coeff)
 
 stretch_coeff_2 = lambda stretch_interval: (stretch_interval - 1) / 1.5
@@ -23,8 +25,16 @@ pyth_n = lambda v, o: 7 * v - 12 * o
 pyth_r = lambda v, o, stretch_interval: (1.5 ** v) / (2.0 * stretch_interval) ** o
 pyth   = lambda v, o, stretch_interval: (pyth_n(v, o), pyth_r(v, o, stretch_interval))
 
+inharmonicity_coefficient_func = lambda x, a, b, c, d, e: a + b * x + c * x * x + (d / x) + (e / (x * x))
 
-
+def steinway_inharmonicity_coefficient_func(frequency):
+	# empirical inharmonicity model for Steinway B
+	a = 5.22964e-6
+	b = 1.21012e-6
+	c = 8.3666e-10
+	d = -0.007927
+	e = 0.429601
+	return inharmonicity_coefficient_func(frequency, a, b, c, d, e)
 
 class Note:
 	def __init__(self, notes, midi_n, note_frequency = None, inharmonicity_coeff = 0.0):
@@ -40,7 +50,7 @@ class Note:
 		if self.f is None:
 			self.f = float(f)
 		elif self.f != f:
-			print "frequency mismatch on %i %r != %r" % (self.n, self.f, f)
+			print("frequency mismatch on %i %r != %r" % (self.n, self.f, f))
 
 	def get_interval(self, delta):
 		return self.notes[self.n + delta]
@@ -55,29 +65,37 @@ class Note:
 		self.parent = parent
 		parent.add_child(self)
 
-	def rel_tune(self, delta, n, d):
+	def rel_tune(self, delta, n, d, use_inharmonicity = False):
 		parent = self.get_interval(delta)
 
 		if parent.f is None:
 			self.notes.report()
 			raise IndexError("reference parent note %i has no frequency" % parent.n)
 
-		f = float(parent.f) * n / d
+		if use_inharmonicity:
+			coeff = steinway_inharmonicity_coefficient_func(parent.f)
+			stretch = inharmonicity_coefficient_ratio(2, coeff) / 2
+			#print("stretch %f" % stretch)
+			f = float(parent.f) * n / d * stretch
+			#print("f %f -> %f" % (parent.f, f))
+		else:
+			f = float(parent.f) * n / d
+
 
 		if self.parent is None:
 			self.set_parent(parent)
 			self.set_frequency(f)
 		else:
 			self.notes.report()
-			print "parent is already assigned on %i (existing parent is %i, attempting to set %i)" % (self.n, self.parent.n, parent.n)
+			print("parent is already assigned on %i (existing parent is %i, attempting to set %i)" % (self.n, self.parent.n, parent.n))
 			raise KeyError
 
-	def seq_tune(self, delta, n, d):
+	def seq_tune(self, delta, n, d, use_inharmonicity = False):
 		note = self.get_interval(delta)
-		note.rel_tune( - delta, n, d)
+		note.rel_tune( - delta, n, d, use_inharmonicity)
 
 		return note
-		
+			
 	def get_parent(self):
 		return self.parent
 
@@ -142,12 +160,12 @@ class Notes:
 		import math
 		for note in self.notes:
 			if note.f is not None:
-				octave = note.n / 12 - 1 # MIDI octave to piano octave
+				octave = note.n // 12 - 1  # MIDI octave to piano octave (integer division)
 				ref_f = self.notes[60].f * 2 ** (float(note.n - 60) / 12) 
 				diff_f = ref_f - note.f
 				diff_r = ref_f / note.f
 				cents = 1200.0 * math.log(diff_r) / math.log(2)
-				print "%i: %f, %f, %f, %f" % (note.n, note.f, ref_f, diff_f, cents)
+				print("%i: %f, %f, %f, %f" % (note.n, note.f, ref_f, diff_f, cents))
 				for delta, n, d, in [
 					(12, 2,  1),
 					(7,  3,  2),
@@ -166,7 +184,7 @@ class Notes:
 						interval_diff_f = note.f * n / d - interval_note.f
 						interval_diff_r = note.f * n / d / interval_note.f
 						cents = 1200.0 * math.log(interval_diff_r) / math.log(2)
-						print "\t%i/%i offset: %f, %f" % (n, d, interval_diff_f, cents)
+						print("\t%i/%i offset: %f, %f" % (n, d, interval_diff_f, cents))
 						inc_key(interval_total, (octave, n, d))
 
 						if interval_diff_f == 0.0:
@@ -193,11 +211,11 @@ class Notes:
 			consonant = total_key(interval_consonant_count, (octave, n, d))
 			dissonant = total_key(interval_dissonant_count, (octave, n, d))
 			path      = total_key(interval_path_count,      (octave, n, d))
-			print "%i %i/%i percent just:      %f" % (octave, n, d, float(just)      * 100 / total)
-			print "%i %i/%i percent consonant: %f" % (octave, n, d, float(consonant) * 100 / total)
-			print "%i %i/%i percent dissonant: %f" % (octave, n, d, float(dissonant) * 100 / total)
-			print "%i %i/%i percent obscured:  %f" % (octave, n, d, float(total - consonant - dissonant) * 100 / total)
-			print "%i %i/%i average path:      %f" % (octave, n, d, float(path) / total)
+			print("%i %i/%i percent just:      %f" % (octave, n, d, float(just)      * 100 / total))
+			print("%i %i/%i percent consonant: %f" % (octave, n, d, float(consonant) * 100 / total))
+			print("%i %i/%i percent dissonant: %f" % (octave, n, d, float(dissonant) * 100 / total))
+			print("%i %i/%i percent obscured:  %f" % (octave, n, d, float(total - consonant - dissonant) * 100 / total))
+			print("%i %i/%i average path:      %f" % (octave, n, d, float(path) / total))
 			print
 
 
@@ -262,6 +280,8 @@ class EvenNotes(Notes):
 
 class TemperamentNotes(Notes):
 
+	octave = 2.0
+
 	def __init__(self):
 		Notes.__init__(self)
 		C4 = self[60]
@@ -276,7 +296,7 @@ class TemperamentNotes(Notes):
 		shift_octave = to_octave - from_octave
 		for i in range(12):
 			note = self[60 + 12 * (from_octave - 4) + i]
-			note = note.seq_tune(shift_octave * 12, 2 ** shift_octave, 1)
+			note = note.seq_tune(shift_octave * 12, self.octave ** shift_octave, 1)
 
 	def extrapolate_temperaments(self):
 		self.extrapolate_temperament_octave(4, 5)
@@ -307,12 +327,241 @@ class JustNotes(TemperamentNotes):
 		Eb4 = G4.seq_tune(-4,   4,   5) # 3 term +1
 		Bb4 = D4.seq_tune(12-4, 4*2, 5) # 3 term +2
 				
+class StretchJustNotes(TemperamentNotes):
+	octave = stretch_octave
+
+	def init_temperament(self, C4):
+		# 3 terms
+		F4  = C4.seq_tune(12-7, stretch_octave * 2, 3)  # 3 term -1
+		C4                          # 3 term  0
+		G4  = C4.seq_tune(7, 3, 2)  # 3 term +1
+		D4  = G4.seq_tune(7 - 12, 3, 2 * stretch_octave) # 3 term +2
+
+		# 5 term +1
+		A4  = F4.seq_tune(4, 5, 4)  # 3 term -1
+		E4  = C4.seq_tune(4, 5, 4)  # 3 term  0
+		B4  = G4.seq_tune(4, 5, 4)  # 3 term +1
+		Fs4 = D4.seq_tune(4, 5, 4)  # 3 term +2
+
+		# 5 term -1
+		Db4 = F4.seq_tune(-4,   4,   5) # 3 term -1
+		Ab4 = C4.seq_tune(12-4, stretch_octave * 4, 5) # 3 term  0
+		Eb4 = G4.seq_tune(-4,   4,   5) # 3 term +1
+		Bb4 = D4.seq_tune(12-4, stretch_octave * 4, 5) # 3 term +2
+				
 		
+class HybridNotes(Notes):
+	def __init__(self):
+		Notes.__init__(self)
+
+		self.init_leaf_middle()
+
+		self.init_octaves_low()
+
+		self.init_octaves_high()
+
+	def init_leaf_middle(self):
+		# anchor C where A = 415 Hz
+		C4 = self[60]
+		C4.set_frequency(415.0 * 2 ** (3 / 12.0) / 1)
+
+		# Tune a chain of 5ths from Bb2 to A6, out from C4 in two directions
+		F3 = C4.seq_tune(-7, 2, 3)
+		Bb2 = F3.seq_tune(-7, 2, 3)
+
+		G4 = C4.seq_tune(7, 3, 2)
+		D5 = G4.seq_tune(7, 3, 2)
+		A5 = D5.seq_tune(7, 3, 2)
+
+		# Fill in the notes between Bb2 and A6 by connecting octaves along their natural inharmonicity
+		# from C4
+		C5 = C4.seq_tune(12, 2, 1, True)
+		C3 = C4.seq_tune(-12, 1, 2, True)
 		
+		# from F3
+		F4 = F3.seq_tune(12, 2, 1, True)
+		F5 = F4.seq_tune(12, 2, 1, True)
+
+		# from Bb2
+		Bb3 = Bb2.seq_tune(12, 2, 1, True)
+		Bb4 = Bb3.seq_tune(12, 2, 1, True)
+
+		# from G4
+		G3 = G4.seq_tune(-12, 1, 2, True)
+		G5 = G4.seq_tune(12, 2, 1, True)
+
+		# from D5
+		D4 = D5.seq_tune(-12, 1, 2, True)
+		D3 = D4.seq_tune(-12, 1, 2, True)
+
+		# from A5
+		A4 = A5.seq_tune(-12, 1, 2, True)
+		A3 = A4.seq_tune(-12, 1, 2, True)
+
+		# notes currently in the middle of the keyboard
+		# Bb2, Bb3, Bb4
+		# F3, F4, F5
+		# C3, C4, C5
+		# G3, G4, G5
+		# D3, D4, D5
+		# A3, A4, A5
+
+		# notes remaining in the middle of the keyboard
+		# E3, E4, E5 # bridge between C4 and B2
+
+		# B2, B3, B4
+		# F#3, F#4, F#5
+		# C#3, C#4, C#5
+		# G#3, G#4, G#5
+		# D#3, D#4, D#5
+
+
+		# Tune a chain of 5ths from E4 (via E3 stretched octave, to B2 rational 4th)
+		# Tune E4 rationally to C4
+		E4 = C4.seq_tune(4, 5, 4)
+
+		# Get to E3 from E4 stretched octave
+		E3 = E4.seq_tune(-12, 1, 2, True)
+
+		# Get to B3 from E3 rational 4th
+		B2 = E3.seq_tune(-5, 3, 4)
+
+		# chain B2 to D#5 via 5ths
+		Fs3 = B2.seq_tune(7, 3, 2)
+		Cs4 = Fs3.seq_tune(7, 3, 2)
+		Gs4 = Cs4.seq_tune(7, 3, 2)
+		Ds5 = Gs4.seq_tune(7, 3, 2)
+
+		# Fill in the notes between B2 and D#5 by connecting octaves along their natural inharmonicity
+		# from E4
+		E5 = E4.seq_tune(12, 2, 1, True)
+		# E3 is already set
+
+		# from B2
+		B3 = B2.seq_tune(12, 2, 1, True)
+		B4 = B3.seq_tune(12, 2, 1, True)
+
+		# from Fs3
+		Fs4 = Fs3.seq_tune(12, 2, 1, True)
+		Fs5 = Fs4.seq_tune(12, 2, 1, True)
+
+		# from Cs4
+		Cs5 = Cs4.seq_tune(12, 2, 1, True)
+		Cs3 = Cs4.seq_tune(-12, 1, 2, True)
+
+		# from Gs4
+		Gs5 = Gs4.seq_tune(12, 2, 1, True)
+		Gs3 = Gs4.seq_tune(-12, 1, 2, True)
+
+		# from Ds5
+		Ds4 = Ds5.seq_tune(-12, 1, 2, True)
+		Ds3 = Ds4.seq_tune(-12, 1, 2, True)
+
+		
+
+
+	def init_octaves_low(self):
+		# stretched octaves down from below Bb2
+
+		# Bb2 - A3 references
+		Bb2 = self[60 - 12 - 1]
+		B2  = self[60 - 12 - 2]
+		C3  = self[60 - 12]
+		Cs3 = self[60 - 12 + 1]
+		D3  = self[60 - 12 + 2]
+		Ds3 = self[60 - 12 + 3]
+		E3  = self[60 - 12 + 4]
+		F3  = self[60 - 12 + 5]
+		Fs3 = self[60 - 12 + 6]
+		G3  = self[60 - 12 + 7]
+		Gs3 = self[60 - 12 + 8]
+		A3  = self[60 - 12 + 9]
+
+		# Bb1 - A2
+		Bb1 = Bb2.seq_tune(-12, 1, 2, True)
+		B1  = B2.seq_tune(-12, 1, 2, True)
+		C2  = C3.seq_tune(-12, 1, 2, True)
+		Cs2 = Cs3.seq_tune(-12, 1, 2, True)
+		D2  = D3.seq_tune(-12, 1, 2, True)
+		Ds2 = Ds3.seq_tune(-12, 1, 2, True)
+		E2  = E3.seq_tune(-12, 1, 2, True)
+		F2  = F3.seq_tune(-12, 1, 2, True)
+		Fs2 = Fs3.seq_tune(-12, 1, 2, True)
+		G2  = G3.seq_tune(-12, 1, 2, True)
+		Gs2 = Gs3.seq_tune(-12, 1, 2, True)
+		A2  = A3.seq_tune(-12, 1, 2, True)
+
+		# Bb0 - A1
+		Bb0 = Bb1.seq_tune(-12, 1, 2, True)
+		B0  = B1.seq_tune(-12, 1, 2, True)
+		C1  = C2.seq_tune(-12, 1, 2, True)
+		Cs1 = Cs2.seq_tune(-12, 1, 2, True)
+		D1  = D2.seq_tune(-12, 1, 2, True)
+		Ds1 = Ds2.seq_tune(-12, 1, 2, True)
+		E1  = E2.seq_tune(-12, 1, 2, True)
+		F1  = F2.seq_tune(-12, 1, 2, True)
+		Fs1 = Fs2.seq_tune(-12, 1, 2, True)
+		G1  = G2.seq_tune(-12, 1, 2, True)
+		Gs1 = Gs2.seq_tune(-12, 1, 2, True)
+		A1  = A2.seq_tune(-12, 1, 2, True)
+
+		# A0
+		A0  = A1.seq_tune(-12, 1, 2, True)
+
+	def init_octaves_high(self):
+		# stretched octaves up from above A5
+		# Bb4 - A5 references
+		Bb4 = self[60 + 12 - 2]
+		B4  = self[60 + 12 - 1]
+		C5  = self[60 + 12]
+		Cs5 = self[60 + 12 + 1]
+		D5  = self[60 + 12 + 2]
+		Ds5 = self[60 + 12 + 3]
+		E5  = self[60 + 12 + 4]
+		F5  = self[60 + 12 + 5]
+		Fs5 = self[60 + 12 + 6]
+		G5  = self[60 + 12 + 7]
+		Gs5 = self[60 + 12 + 8]
+		A5  = self[60 + 12 + 9]
+
+		# Bb5 - A6
+		Bb5 = Bb4.seq_tune(12, 2, 1, True)
+		B5  = B4.seq_tune(12, 2, 1, True)
+		C6  = C5.seq_tune(12, 2, 1, True)
+		Cs6 = Cs5.seq_tune(12, 2, 1, True)
+		D6  = D5.seq_tune(12, 2, 1, True)
+		Ds6 = Ds5.seq_tune(12, 2, 1, True)
+		E6  = E5.seq_tune(12, 2, 1, True)
+		F6  = F5.seq_tune(12, 2, 1, True)
+		Fs6 = Fs5.seq_tune(12, 2, 1, True)
+		G6  = G5.seq_tune(12, 2, 1, True)
+		Gs6 = Gs5.seq_tune(12, 2, 1, True)
+		A6  = A5.seq_tune(12, 2, 1, True)
+
+		# Bb6 - A7
+		Bb6 = Bb5.seq_tune(12, 2, 1, True)
+		B6  = B5.seq_tune(12, 2, 1, True)
+		C7  = C6.seq_tune(12, 2, 1, True)
+		Cs7 = Cs6.seq_tune(12, 2, 1, True)
+		D7  = D6.seq_tune(12, 2, 1, True)
+		Ds7 = Ds6.seq_tune(12, 2, 1, True)
+		E7  = E6.seq_tune(12, 2, 1, True)
+		F7  = F6.seq_tune(12, 2, 1, True)
+		Fs7 = Fs6.seq_tune(12, 2, 1, True)
+		G7  = G6.seq_tune(12, 2, 1, True)
+		Gs7 = Gs6.seq_tune(12, 2, 1, True)
+		A7  = A6.seq_tune(12, 2, 1, True)
+		
+		# Bb7 - C8
+		Bb7 = Bb6.seq_tune(12, 2, 1, True)
+		B7  = B6.seq_tune(12, 2, 1, True)
+		C8  = C7.seq_tune(12, 2, 1, True)
 
 
 class PATHNotes(Notes):
-	def __init__(self):
+	def __init__(self, use_inharmonicity = False, temper_thirds = False):
+		self.use_inharmonicity = use_inharmonicity
+		self.temper_thirds = temper_thirds
 		Notes.__init__(self)
 
 		self.init_leaf3()
@@ -328,37 +577,37 @@ class PATHNotes(Notes):
 	def init_leaf1(self):
 		A1 = self[60 - 12 - 12 - 3]
 		for note in [A1.get_interval(- i) for i in range(13)]:
-			note.rel_tune(12, 1, 2)
+			note.rel_tune(12, 1, 2, self.use_inharmonicity)
 	
 	def init_leaf2(self):
 		F3 = self[60 - 7]
-		F2 = F3.seq_tune(-12, 1, 2)
+		F2 = F3.seq_tune(-12, 1, 2, self.use_inharmonicity)
 
 		note = F2.seq_tune(-7, 2, 3)    # A#1
 		note = F2.seq_tune(7, 3, 2)     # C3
-		note = note.seq_tune(-12, 1, 2) # C2
+		note = note.seq_tune(-12, 1, 2, self.use_inharmonicity) # C2
 		note = note.seq_tune(7, 3, 2)   # G2
 		note = note.seq_tune(7, 3, 2)   # D3
 
 		A3 = self[60 - 3]
-		A2 = A3.seq_tune(-12, 1, 2)
+		A2 = A3.seq_tune(-12, 1, 2, self.use_inharmonicity) # A2
 
 		note = A2.seq_tune(-7, 2, 3)    # D2
 		note = A2.seq_tune(7, 3, 2)     # E3
-		note = note.seq_tune(-12, 1, 2) # E2
+		note = note.seq_tune(-12, 1, 2, self.use_inharmonicity) # E2
 		note = note.seq_tune(7, 3, 2)   # B2
 		
 		Fs3 = self[60 - 6]
-		Fs2 = Fs3.seq_tune(-12, 1, 2)
+		Fs2 = Fs3.seq_tune(-12, 1, 2, self.use_inharmonicity)
 
 		note = Fs2.seq_tune(-7, 2, 3)   # B1
 		note = Fs2.seq_tune(7, 3, 2)    # C#3
-		note = note.seq_tune(-12, 1, 2) # C#2
+		note = note.seq_tune(-12, 1, 2, self.use_inharmonicity) # C#2
 		note = note.seq_tune(7, 3, 2)   # G#2
 		note = note.seq_tune(7, 3, 2)   # D#3
 		
 		As3 = self[60 - 2]
-		As2 = As3.seq_tune(-12, 1, 2)
+		As2 = As3.seq_tune(-12, 1, 2, self.use_inharmonicity)
 
 		note = As2.seq_tune(-7, 2, 3)   # D#2
 		
@@ -373,71 +622,78 @@ class PATHNotes(Notes):
 
 		note = C4.seq_tune(-7, 2, 3)    # F3
 		note = C4.seq_tune(7, 3, 2)     # G4
-		note = note.seq_tune(-12, 1, 2) # G3
+		note = note.seq_tune(-12, 1, 2, self.use_inharmonicity) # G3
 		note = note.seq_tune(7, 3, 2)   # D4
 		note = note.seq_tune(7, 3, 2)   # A4
-		note = note.seq_tune(-12, 1, 2) # A3
-		# use 5/4 from C4, rather than pure pythagorean via 5ths, to roll back a syntonic comma across the circle. (80/64 instead of 81/64)
-		note = C4.seq_tune(4, 5, 4)     # E4
+		note = note.seq_tune(-12, 1, 2, self.use_inharmonicity) # A3
+		if self.temper_thirds:
+			# use 5/4 from C4, rather than pure pythagorean via 5ths, to roll back a syntonic comma across the circle. (80/64 instead of 81/64)
+			note = C4.seq_tune(4, 5, 4)     # E4
+		else:
+			note = note.seq_tune(7, 3, 2)   # E4
 		note = note.seq_tune(7, 3, 2)   # B4
-		note = note.seq_tune(-12, 1, 2) # B3
+		note = note.seq_tune(-12, 1, 2, self.use_inharmonicity) # B3
 		B3   = note
 		note = note.seq_tune(7, 3, 2)   # F#4
-		note = note.seq_tune(-12, 1, 2) # F#3
+		note = note.seq_tune(-12, 1, 2, self.use_inharmonicity) # F#3
 		note = note.seq_tune(7, 3, 2)   # C#4
 		note = note.seq_tune(7, 3, 2)   # G#4
-		note = note.seq_tune(-12, 1, 2) # G#3
-		#note = note.seq_tune(7, 3, 2)   # D#4
+		note = note.seq_tune(-12, 1, 2, self.use_inharmonicity) # G#3
+		note = note.seq_tune(7, 3, 2)   # D#4
 		# use 5/4 from B3
-		note = B3.seq_tune(4, 5, 4)     # D#4
+		#note = B3.seq_tune(4, 5, 4)     # D#4
 		note = note.seq_tune(7, 3, 2)   # A#4
-		note = note.seq_tune(-12, 1, 2) # A#3
+		note = note.seq_tune(-12, 1, 2, self.use_inharmonicity) # A#3
 		note = note.seq_tune(7, 3, 2)   # F4
 
 	def init_leaf4(self):
 		G4 = self[60 + 7]
-		G5 = G4.seq_tune(12, 2, 1)
+		G5 = G4.seq_tune(12, 2, 1, self.use_inharmonicity)
 
 		note = G5.seq_tune(-7, 2, 3)    # C5
 		note = G5.seq_tune(7, 3, 2)     # D6
-		note = note.seq_tune(-12, 1, 2) # D5
+		note = note.seq_tune(-12, 1, 2, self.use_inharmonicity) # D5
 		note = note.seq_tune(7, 3, 2)   # A5
 		note = note.seq_tune(7, 3, 2)   # E6
 
 		E4 = self[60 + 4]
-		E5 = E4.seq_tune(12, 2, 1)
+		E5 = E4.seq_tune(12, 2, 1, self.use_inharmonicity)
 
-		note = E5.seq_tune(7, 3, 2)     # B5
+		if self.temper_thirds:
+			# use 5/4 from C4, rather than pure pythagorean via 5ths, to roll back a syntonic comma across the circle. (80/64 instead of 81/64)
+			note = G5.seq_tune(4, 5, 4)     # B5
+		else:
+			note = E5.seq_tune(7, 3, 2)     # B5
 		note = note.seq_tune(7, 3, 2)   # F#6
-		note = note.seq_tune(-12, 1, 2) # F#5
+		note = note.seq_tune(-12, 1, 2, self.use_inharmonicity) # F#5
 		note = note.seq_tune(7, 3, 2)   # C#6
 
 		Cs4 = self[60 + 1]
-		Cs5 = Cs4.seq_tune(12, 2, 1)
+		Cs5 = Cs4.seq_tune(12, 2, 1, self.use_inharmonicity)
 
 		note = Cs5.seq_tune(7, 3, 2)    # G#5
 		note = note.seq_tune(7, 3, 2)   # D#6
-		note = note.seq_tune(-12, 1, 2) # D#5
+		note = note.seq_tune(-12, 1, 2, self.use_inharmonicity) # D#5
 		note = note.seq_tune(7, 3, 2)   # A#5
 		note = note.seq_tune(7, 3, 2)   # F6
 
 		F4 = self[60 + 5]
-		F5 = F4.seq_tune(12, 2, 1)
+		F5 = F4.seq_tune(12, 2, 1, self.use_inharmonicity)
 
 		note = F5.seq_tune(7, 3, 2)   # C6	
 
 	def init_leaf5(self):
 		D6 = self[60 + 12 + 12 + 2]
-		D7 = D6.seq_tune(12, 2, 1)
+		D7 = D6.seq_tune(12, 2, 1, self.use_inharmonicity)
 
 		note = D7.seq_tune(-7, 2, 3)    # G6
 		note = D7.seq_tune(7, 3, 2)     # A7
-		note = note.seq_tune(-12, 1, 2) # A6
+		note = note.seq_tune(-12, 1, 2, self.use_inharmonicity) # A6
 		note = note.seq_tune(7, 3, 2)   # E7
 		note = note.seq_tune(7, 3, 2)   # B7
 
 		B5 = self[60 + 12 + 11]
-		B6 = B5.seq_tune(12, 2, 1)
+		B6 = B5.seq_tune(12, 2, 1, self.use_inharmonicity)
 
 		note = B6.seq_tune(7, 3, 2)     # F#7
 		# C#8 does not exist
@@ -445,16 +701,16 @@ class PATHNotes(Notes):
 		note = note.seq_tune(7, 3, 2)   # G#7
 
 		Gs5 = self[60 + 12 + 8]
-		Gs6 = Gs5.seq_tune(12, 2, 1)
+		Gs6 = Gs5.seq_tune(12, 2, 1, self.use_inharmonicity)
 
 		note = Gs6.seq_tune(7, 3, 2)    # D#7
 		note = note.seq_tune(7, 3, 2)   # A#7
-		note = note.seq_tune(-12, 1, 2) # A#6
+		note = note.seq_tune(-12, 1, 2, self.use_inharmonicity) # A#6
 		note = note.seq_tune(7, 3, 2)   # F7
 		note = note.seq_tune(7, 3, 2)   # C8
 
 		C6 = self[60 + 12 + 12]
-		C7 = C6.seq_tune(12, 2, 1)
+		C7 = C6.seq_tune(12, 2, 1, self.use_inharmonicity)
 
 		note = C7.seq_tune(7, 3, 2)     # G7
 		
@@ -466,11 +722,17 @@ def main():
 	#anotes = ANotes()
 	#anotes.report()
 
-	pathnotes = PATHNotes()
+	pathnotes = PATHNotes(False, False)
 	pathnotes.report()
+
+	#hybridnotes = HybridNotes()
+	#hybridnotes.report()
 
 	#justnotes = JustNotes()
 	#justnotes.report()
+
+	#stretchjustnotes = StretchJustNotes()
+	#stretchjustnotes.report()
 
 if __name__ == "__main__":
 	main()
