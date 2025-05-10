@@ -36,6 +36,17 @@ def steinway_inharmonicity_coefficient_func(frequency):
 	e = 0.429601
 	return inharmonicity_coefficient_func(frequency, a, b, c, d, e)
 
+ # mapping from MIDI numbers to note names
+NOTE_NAMES = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B']
+
+def midi_to_name(n):
+    """
+    Convert a MIDI note number to its note name (e.g., 60 -> 'C4').
+    """
+    octave = n // 12 - 1
+    name = NOTE_NAMES[n % 12]
+    return f"{name}{octave}"
+
 class Note:
 	def __init__(self, notes, midi_n, note_frequency = None, inharmonicity_coeff = 0.0):
 		self.notes = notes
@@ -115,12 +126,19 @@ class Note:
 
 class Notes:
 	def __init__(self):
+		self.sequence = []
+		self.sequence_set = set()
 		self.notes = [
 			Note(self, n, None, inharmonicity_coefficient_2nd_harmonic)
 			for n in range(150)
 		]
 
 	def __getitem__(self, n):
+		if n not in self.sequence_set:
+			self.sequence_set.add(n)
+			# add to sequence in order
+			self.sequence.append(self.notes[n])
+
 		return self.notes[n]
 
 	def get_interval_path(self, noteA, noteB):
@@ -218,7 +236,28 @@ class Notes:
 			print("%i %i/%i average path:      %f" % (octave, n, d, float(path) / total))
 			print
 
+	def describe_sequence(self):
+		"""
+		Print a human-readable description of each note's tuning step 
+		in graph order, starting from root notes and following child links.
+		"""
+		import math
 
+		for note in self.sequence:
+			if note.f is not None:
+				parent = note.parent
+				if parent is not None:
+					interval = note.n - parent.n
+					ratio = note.f / parent.f if parent.f else None
+					print(
+						f"{midi_to_name(parent.n):>4} ({parent.f:8.2f} Hz) -> "
+						f"{midi_to_name(note.n):>4} ({note.f:8.2f} Hz), "
+						f"interval {interval:+3d}, ratio {ratio:8.5f}"
+					)
+				else:
+					print(f"{midi_to_name(note.n):>4} ({note.f:8.2f} Hz) (reference note)")
+			else:
+				print(f"{midi_to_name(note.n):>4} (frequency unknown)")
 
 
 class ANotes(Notes):
@@ -722,11 +761,13 @@ def main():
 	#anotes = ANotes()
 	#anotes.report()
 
-	pathnotes = PATHNotes(False, False)
-	pathnotes.report()
+	#pathnotes = PATHNotes(False, False)
+	#pathnotes.report()
+	#pathnotes.describe_sequence()
 
-	#hybridnotes = HybridNotes()
-	#hybridnotes.report()
+	hybridnotes = HybridNotes()
+	hybridnotes.report()
+	hybridnotes.describe_sequence()
 
 	#justnotes = JustNotes()
 	#justnotes.report()
