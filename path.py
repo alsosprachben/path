@@ -126,6 +126,8 @@ class Note:
 
 class Notes:
 	def __init__(self):
+		from sys import stdout
+		self.report_file = stdout
 		self.sequence = []
 		self.sequence_set = set()
 		self.notes = [
@@ -164,7 +166,9 @@ class Notes:
 		for note in reversed(noteB_ancestry):
 			yield note
 
-	def report(self):
+	def report(self, file = None):
+		if file is not None:
+			self.report_file = file
 		total_key = lambda d, k: d.setdefault(k, [0])[0]
 		def inc_key(d, k):
 			d.setdefault(k, [0])[0] = total_key(d, k) + 1
@@ -183,7 +187,7 @@ class Notes:
 				diff_f = ref_f - note.f
 				diff_r = ref_f / note.f
 				cents = 1200.0 * math.log(diff_r) / math.log(2)
-				print("%i: %f, %f, %f, %f" % (note.n, note.f, ref_f, diff_f, cents))
+				print("%i: %f, %f, %f, %f" % (note.n, note.f, ref_f, diff_f, cents), file=self.report_file)
 				for delta, n, d, in [
 					(12, 2,  1),
 					(7,  3,  2),
@@ -202,7 +206,7 @@ class Notes:
 						interval_diff_f = note.f * n / d - interval_note.f
 						interval_diff_r = note.f * n / d / interval_note.f
 						cents = 1200.0 * math.log(interval_diff_r) / math.log(2)
-						print("\t%i/%i offset: %f, %f" % (n, d, interval_diff_f, cents))
+						print("\t%i/%i offset: %f, %f" % (n, d, interval_diff_f, cents), file=self.report_file)
 						inc_key(interval_total, (octave, n, d))
 
 						if interval_diff_f == 0.0:
@@ -229,19 +233,20 @@ class Notes:
 			consonant = total_key(interval_consonant_count, (octave, n, d))
 			dissonant = total_key(interval_dissonant_count, (octave, n, d))
 			path      = total_key(interval_path_count,      (octave, n, d))
-			print("%i %i/%i percent just:      %f" % (octave, n, d, float(just)      * 100 / total))
-			print("%i %i/%i percent consonant: %f" % (octave, n, d, float(consonant) * 100 / total))
-			print("%i %i/%i percent dissonant: %f" % (octave, n, d, float(dissonant) * 100 / total))
-			print("%i %i/%i percent obscured:  %f" % (octave, n, d, float(total - consonant - dissonant) * 100 / total))
-			print("%i %i/%i average path:      %f" % (octave, n, d, float(path) / total))
-			print
+			print("%i %i/%i percent just:      %f" % (octave, n, d, float(just)      * 100 / total), file=self.report_file)
+			print("%i %i/%i percent consonant: %f" % (octave, n, d, float(consonant) * 100 / total), file=self.report_file)
+			print("%i %i/%i percent dissonant: %f" % (octave, n, d, float(dissonant) * 100 / total), file=self.report_file)
+			print("%i %i/%i percent obscured:  %f" % (octave, n, d, float(total - consonant - dissonant) * 100 / total), file=self.report_file)
+			print("%i %i/%i average path:      %f" % (octave, n, d, float(path) / total), file=self.report_file)
+			print("%i %i/%i total:             %i" % (octave, n, d, total), file=self.report_file)
 
-	def describe_sequence(self):
+	def describe_sequence(self, file = None):
 		"""
 		Print a human-readable description of each note's tuning step 
 		in graph order, starting from root notes and following child links.
 		"""
-		import math
+		if file is not None:
+			self.report_file = file
 
 		for note in self.sequence:
 			if note.f is not None:
@@ -253,11 +258,39 @@ class Notes:
 						f"{midi_to_name(parent.n):>4} ({parent.f:8.2f} Hz) -> "
 						f"{midi_to_name(note.n):>4} ({note.f:8.2f} Hz), "
 						f"interval {interval:+3d}, ratio {ratio:8.5f}"
+						, file=self.report_file
 					)
 				else:
-					print(f"{midi_to_name(note.n):>4} ({note.f:8.2f} Hz) (reference note)")
+					print(f"{midi_to_name(note.n):>4} ({note.f:8.2f} Hz) (reference note)", file=self.report_file)
 			else:
-				print(f"{midi_to_name(note.n):>4} (frequency unknown)")
+				print(f"{midi_to_name(note.n):>4} (frequency unknown)", file=self.report_file)
+
+	def describe_sequence_markdown(self, file = None):
+		"""
+		Print a human-readable description of each note's tuning step 
+		in graph order, starting from root notes and following child links.
+		"""
+		if file is not None:
+			self.report_file = file
+
+		print("| Parent Note | Child Note | Interval | Ratio |", file=self.report_file)
+
+		for note in self.sequence:
+			if note.f is not None:
+				parent = note.parent
+				if parent is not None:
+					interval = note.n - parent.n
+					ratio = note.f / parent.f if parent.f else None
+					print(
+						f"| {midi_to_name(parent.n):>4} ({parent.f:8.2f} Hz) | "
+						f"{midi_to_name(note.n):>4} ({note.f:8.2f} Hz) | "
+						f"interval {interval:+3d} | ratio {ratio:8.5f} |"
+						, file=self.report_file
+					)
+				else:
+					print(f"| {midi_to_name(note.n):>4} ({note.f:8.2f} Hz) | (reference note) |", file=self.report_file)
+			else:
+				print(f"| {midi_to_name(note.n):>4} (frequency unknown) |", file=self.report_file)
 
 
 class ANotes(Notes):
@@ -310,12 +343,21 @@ class ANotes(Notes):
 				# anchor the next sequence down an octave from `k`
 				note = note.seq_tune(-12, 1, 2)
 
-class EvenNotes(Notes):
+class EqualNotes(Notes):
 	def __init__(self):
 		Notes.__init__(self)
 
 		for note in self.notes:
 			note.f = 256.0 * 2.0 ** ((note.n - 60) / 12.0)
+
+class EqualPythagorean(Notes):
+	def __init__(self):
+		self.octave = 2.0 * stretch_interval
+		Notes.__init__(self)
+
+		for note in self.notes:
+			note.f = 256.0 * (2.0 * stretch_interval) ** ((note.n - 60) / 12.0)
+
 
 class TemperamentNotes(Notes):
 
@@ -755,25 +797,61 @@ class PATHNotes(Notes):
 		
 
 def main():
-	#evennotes = EvenNotes()
-	#evennotes.report()
+	r = open("equal_report.txt", "w")
+	s = open("equal_sequence.txt", "w")
+	m = open("equal_markdown.txt", "w")
+	equalnotes = EqualNotes()
+	equalnotes.describe_sequence(s)
+	equalnotes.describe_sequence_markdown(m)
+	equalnotes.report(r)
 
-	#anotes = ANotes()
-	#anotes.report()
+	r = open("equalpyth_report.txt", "w")
+	s = open("equalpyth_sequence.txt", "w")
+	m = open("equalpyth_markdown.txt", "w")
+	equalpythnotes = EqualPythagorean()
+	equalpythnotes.describe_sequence(s)
+	equalpythnotes.describe_sequence_markdown(m)
+	equalpythnotes.report(r)
 
-	#pathnotes = PATHNotes(False, False)
-	#pathnotes.report()
-	#pathnotes.describe_sequence()
+	r = open("a_report.txt", "w")
+	s = open("a_sequence.txt", "w")
+	m = open("a_markdown.txt", "w")
+	anotes = ANotes()
+	anotes.describe_sequence(s)
+	anotes.describe_sequence_markdown(m)
+	anotes.report(r)
 
+	r = open("path_report.txt", "w")
+	s = open("path_sequence.txt", "w")
+	m = open("path_markdown.txt", "w")
+	pathnotes = PATHNotes(True, True)
+	pathnotes.describe_sequence(s)
+	pathnotes.describe_sequence_markdown(m)
+	pathnotes.report(r)
+
+	r = open("hybrid_report.txt", "w")
+	s = open("hybrid_sequence.txt", "w")
+	m = open("hybrid_markdown.txt", "w")
 	hybridnotes = HybridNotes()
-	hybridnotes.report()
-	hybridnotes.describe_sequence()
+	hybridnotes.describe_sequence(s)
+	hybridnotes.describe_sequence_markdown(m)
+	hybridnotes.report(r)
 
-	#justnotes = JustNotes()
-	#justnotes.report()
+	r = open("just_report.txt", "w")
+	s = open("just_sequence.txt", "w")
+	m = open("just_markdown.txt", "w")
+	justnotes = JustNotes()
+	justnotes.describe_sequence(s)
+	justnotes.describe_sequence_markdown(m)
+	justnotes.report(r)
 
-	#stretchjustnotes = StretchJustNotes()
-	#stretchjustnotes.report()
+	r = open("stretch_report.txt", "w")
+	s = open("stretch_sequence.txt", "w")
+	m = open("stretch_markdown.txt", "w")
+	stretchjustnotes = StretchJustNotes()
+	stretchjustnotes.describe_sequence(s)
+	stretchjustnotes.describe_sequence_markdown(m)
+	stretchjustnotes.report(r)
 
 if __name__ == "__main__":
 	main()
