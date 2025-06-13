@@ -274,6 +274,7 @@ class Notes:
 			self.report_file = file
 
 		print("| Parent Note | Child Note | Interval | Ratio |", file=self.report_file)
+		print("|-------------|------------|----------|-------|", file=self.report_file)
 
 		for note in self.sequence:
 			if note.f is not None:
@@ -284,7 +285,7 @@ class Notes:
 					print(
 						f"| {midi_to_name(parent.n):>4} ({parent.f:8.2f} Hz) | "
 						f"{midi_to_name(note.n):>4} ({note.f:8.2f} Hz) | "
-						f"interval {interval:+3d} | ratio {ratio:8.5f} |"
+						f"{interval:+3d} | {ratio:8.5f} |"
 						, file=self.report_file
 					)
 				else:
