@@ -1,5 +1,5 @@
 | Parent Note | Child Note | Interval | Ratio |
-|   C4 (  261.63 Hz) | (reference note) |
+|   C4 (  261.63 Hz) | (reference note) | | |
 |   C4 (  261.63 Hz) |   F3 (  174.42 Hz) | interval  -7 | ratio  0.66667 |
 |   F3 (  174.42 Hz) |  A#2 (  116.28 Hz) | interval  -7 | ratio  0.66667 |
 |   C4 (  261.63 Hz) |   G4 (  392.44 Hz) | interval  +7 | ratio  1.50000 |

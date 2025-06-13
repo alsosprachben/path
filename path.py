@@ -288,9 +288,9 @@ class Notes:
 						, file=self.report_file
 					)
 				else:
-					print(f"| {midi_to_name(note.n):>4} ({note.f:8.2f} Hz) | (reference note) |", file=self.report_file)
+					print(f"| {midi_to_name(note.n):>4} ({note.f:8.2f} Hz) | (reference note) | | |", file=self.report_file)
 			else:
-				print(f"| {midi_to_name(note.n):>4} (frequency unknown) |", file=self.report_file)
+				print(f"| {midi_to_name(note.n):>4} (frequency unknown) | | | |", file=self.report_file)
 
 
 class ANotes(Notes):
