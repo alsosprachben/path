@@ -689,3 +689,238 @@
 2 3/2 percent dissonant: 8.333333
 2 3/2 percent obscured:  16.666667
 2 3/2 average path:      6.250000
+2 3/2 total:             12
+2 4/3 percent just:      0.000000
+2 4/3 percent consonant: 75.000000
+2 4/3 percent dissonant: 0.000000
+2 4/3 percent obscured:  25.000000
+2 4/3 average path:      6.416667
+2 4/3 total:             12
+2 5/4 percent just:      41.666667
+2 5/4 percent consonant: 66.666667
+2 5/4 percent dissonant: 33.333333
+2 5/4 percent obscured:  0.000000
+2 5/4 average path:      5.000000
+2 5/4 total:             12
+2 6/5 percent just:      33.333333
+2 6/5 percent consonant: 50.000000
+2 6/5 percent dissonant: 25.000000
+2 6/5 percent obscured:  25.000000
+2 6/5 average path:      6.583333
+2 6/5 total:             12
+2 9/8 percent just:      0.000000
+2 9/8 percent consonant: 50.000000
+2 9/8 percent dissonant: 8.333333
+2 9/8 percent obscured:  41.666667
+2 9/8 average path:      7.166667
+2 9/8 total:             12
+2 17/16 percent just:      0.000000
+2 17/16 percent consonant: 25.000000
+2 17/16 percent dissonant: 16.666667
+2 17/16 percent obscured:  58.333333
+2 17/16 average path:      6.750000
+2 17/16 total:             12
+3 2/1 percent just:      0.000000
+3 2/1 percent consonant: 8.333333
+3 2/1 percent dissonant: 0.000000
+3 2/1 percent obscured:  91.666667
+3 2/1 average path:      1.000000
+3 2/1 total:             12
+3 3/2 percent just:      50.000000
+3 3/2 percent consonant: 75.000000
+3 3/2 percent dissonant: 16.666667
+3 3/2 percent obscured:  8.333333
+3 3/2 average path:      4.250000
+3 3/2 total:             12
+3 4/3 percent just:      0.000000
+3 4/3 percent consonant: 50.000000
+3 4/3 percent dissonant: 25.000000
+3 4/3 percent obscured:  25.000000
+3 4/3 average path:      4.416667
+3 4/3 total:             12
+3 5/4 percent just:      33.333333
+3 5/4 percent consonant: 66.666667
+3 5/4 percent dissonant: 33.333333
+3 5/4 percent obscured:  0.000000
+3 5/4 average path:      3.000000
+3 5/4 total:             12
+3 6/5 percent just:      41.666667
+3 6/5 percent consonant: 50.000000
+3 6/5 percent dissonant: 33.333333
+3 6/5 percent obscured:  16.666667
+3 6/5 average path:      4.583333
+3 6/5 total:             12
+3 9/8 percent just:      0.000000
+3 9/8 percent consonant: 50.000000
+3 9/8 percent dissonant: 33.333333
+3 9/8 percent obscured:  16.666667
+3 9/8 average path:      5.166667
+3 9/8 total:             12
+3 17/16 percent just:      0.000000
+3 17/16 percent consonant: 0.000000
+3 17/16 percent dissonant: 41.666667
+3 17/16 percent obscured:  58.333333
+3 17/16 average path:      4.750000
+3 17/16 total:             12
+4 2/1 percent just:      0.000000
+4 2/1 percent consonant: 0.000000
+4 2/1 percent dissonant: 0.000000
+4 2/1 percent obscured:  100.000000
+4 2/1 average path:      1.000000
+4 2/1 total:             12
+4 3/2 percent just:      58.333333
+4 3/2 percent consonant: 75.000000
+4 3/2 percent dissonant: 25.000000
+4 3/2 percent obscured:  0.000000
+4 3/2 average path:      3.416667
+4 3/2 total:             12
+4 4/3 percent just:      0.000000
+4 4/3 percent consonant: 0.000000
+4 4/3 percent dissonant: 25.000000
+4 4/3 percent obscured:  75.000000
+4 4/3 average path:      3.250000
+4 4/3 total:             12
+4 5/4 percent just:      66.666667
+4 5/4 percent consonant: 66.666667
+4 5/4 percent dissonant: 33.333333
+4 5/4 percent obscured:  0.000000
+4 5/4 average path:      1.666667
+4 5/4 total:             12
+4 6/5 percent just:      50.000000
+4 6/5 percent consonant: 50.000000
+4 6/5 percent dissonant: 50.000000
+4 6/5 percent obscured:  0.000000
+4 6/5 average path:      3.083333
+4 6/5 total:             12
+4 9/8 percent just:      0.000000
+4 9/8 percent consonant: 0.000000
+4 9/8 percent dissonant: 50.000000
+4 9/8 percent obscured:  50.000000
+4 9/8 average path:      3.500000
+4 9/8 total:             12
+4 17/16 percent just:      0.000000
+4 17/16 percent consonant: 0.000000
+4 17/16 percent dissonant: 75.000000
+4 17/16 percent obscured:  25.000000
+4 17/16 average path:      2.916667
+4 17/16 total:             12
+5 2/1 percent just:      0.000000
+5 2/1 percent consonant: 0.000000
+5 2/1 percent dissonant: 91.666667
+5 2/1 percent obscured:  8.333333
+5 2/1 average path:      1.000000
+5 2/1 total:             12
+5 3/2 percent just:      41.666667
+5 3/2 percent consonant: 75.000000
+5 3/2 percent dissonant: 25.000000
+5 3/2 percent obscured:  0.000000
+5 3/2 average path:      5.416667
+5 3/2 total:             12
+5 4/3 percent just:      0.000000
+5 4/3 percent consonant: 0.000000
+5 4/3 percent dissonant: 50.000000
+5 4/3 percent obscured:  50.000000
+5 4/3 average path:      5.250000
+5 4/3 total:             12
+5 5/4 percent just:      58.333333
+5 5/4 percent consonant: 66.666667
+5 5/4 percent dissonant: 0.000000
+5 5/4 percent obscured:  33.333333
+5 5/4 average path:      3.666667
+5 5/4 total:             12
+5 6/5 percent just:      8.333333
+5 6/5 percent consonant: 50.000000
+5 6/5 percent dissonant: 41.666667
+5 6/5 percent obscured:  8.333333
+5 6/5 average path:      5.083333
+5 6/5 total:             12
+5 9/8 percent just:      0.000000
+5 9/8 percent consonant: 0.000000
+5 9/8 percent dissonant: 50.000000
+5 9/8 percent obscured:  50.000000
+5 9/8 average path:      5.500000
+5 9/8 total:             12
+5 17/16 percent just:      0.000000
+5 17/16 percent consonant: 0.000000
+5 17/16 percent dissonant: 100.000000
+5 17/16 percent obscured:  0.000000
+5 17/16 average path:      4.916667
+5 17/16 total:             12
+6 2/1 percent just:      0.000000
+6 2/1 percent consonant: 0.000000
+6 2/1 percent dissonant: 100.000000
+6 2/1 percent obscured:  0.000000
+6 2/1 average path:      1.000000
+6 2/1 total:             12
+6 3/2 percent just:      41.666667
+6 3/2 percent consonant: 75.000000
+6 3/2 percent dissonant: 8.333333
+6 3/2 percent obscured:  16.666667
+6 3/2 average path:      7.416667
+6 3/2 total:             12
+6 4/3 percent just:      0.000000
+6 4/3 percent consonant: 0.000000
+6 4/3 percent dissonant: 83.333333
+6 4/3 percent obscured:  16.666667
+6 4/3 average path:      7.250000
+6 4/3 total:             12
+6 5/4 percent just:      41.666667
+6 5/4 percent consonant: 66.666667
+6 5/4 percent dissonant: 0.000000
+6 5/4 percent obscured:  33.333333
+6 5/4 average path:      5.666667
+6 5/4 total:             12
+6 6/5 percent just:      41.666667
+6 6/5 percent consonant: 50.000000
+6 6/5 percent dissonant: 25.000000
+6 6/5 percent obscured:  25.000000
+6 6/5 average path:      7.083333
+6 6/5 total:             12
+6 9/8 percent just:      0.000000
+6 9/8 percent consonant: 0.000000
+6 9/8 percent dissonant: 75.000000
+6 9/8 percent obscured:  25.000000
+6 9/8 average path:      7.500000
+6 9/8 total:             12
+6 17/16 percent just:      0.000000
+6 17/16 percent consonant: 0.000000
+6 17/16 percent dissonant: 66.666667
+6 17/16 percent obscured:  33.333333
+6 17/16 average path:      6.916667
+6 17/16 total:             12
+7 3/2 percent just:      60.000000
+7 3/2 percent consonant: 80.000000
+7 3/2 percent dissonant: 0.000000
+7 3/2 percent obscured:  20.000000
+7 3/2 average path:      8.800000
+7 3/2 total:             5
+7 4/3 percent just:      0.000000
+7 4/3 percent consonant: 0.000000
+7 4/3 percent dissonant: 71.428571
+7 4/3 percent obscured:  28.571429
+7 4/3 average path:      8.857143
+7 4/3 total:             7
+7 5/4 percent just:      62.500000
+7 5/4 percent consonant: 75.000000
+7 5/4 percent dissonant: 0.000000
+7 5/4 percent obscured:  25.000000
+7 5/4 average path:      7.250000
+7 5/4 total:             8
+7 6/5 percent just:      22.222222
+7 6/5 percent consonant: 44.444444
+7 6/5 percent dissonant: 0.000000
+7 6/5 percent obscured:  55.555556
+7 6/5 average path:      8.777778
+7 6/5 total:             9
+7 9/8 percent just:      0.000000
+7 9/8 percent consonant: 0.000000
+7 9/8 percent dissonant: 60.000000
+7 9/8 percent obscured:  40.000000
+7 9/8 average path:      9.300000
+7 9/8 total:             10
+7 17/16 percent just:      0.000000
+7 17/16 percent consonant: 0.000000
+7 17/16 percent dissonant: 45.454545
+7 17/16 percent obscured:  54.545455
+7 17/16 average path:      8.909091
+7 17/16 total:             11

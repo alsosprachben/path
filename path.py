@@ -442,9 +442,9 @@ class HybridNotes(Notes):
 		self.init_octaves_high()
 
 	def init_leaf_middle(self):
-		# anchor C where A = 415 Hz
+		# anchor C where A = 440 Hz
 		C4 = self[60]
-		C4.set_frequency(415.0 * 2 ** (3 / 12.0) / 1)
+		C4.set_frequency(440.0 * 2 ** (3 / 12.0) / 2)
 
 		# Tune a chain of 5ths from Bb2 to A6, out from C4 in two directions
 		F3 = C4.seq_tune(-7, 2, 3)
@@ -799,7 +799,7 @@ class PATHNotes(Notes):
 def main():
 	r = open("equal_report.txt", "w")
 	s = open("equal_sequence.txt", "w")
-	m = open("equal_markdown.txt", "w")
+	m = open("equal_markdown.md", "w")
 	equalnotes = EqualNotes()
 	equalnotes.describe_sequence(s)
 	equalnotes.describe_sequence_markdown(m)
@@ -807,7 +807,7 @@ def main():
 
 	r = open("equalpyth_report.txt", "w")
 	s = open("equalpyth_sequence.txt", "w")
-	m = open("equalpyth_markdown.txt", "w")
+	m = open("equalpyth_markdown.md", "w")
 	equalpythnotes = EqualPythagorean()
 	equalpythnotes.describe_sequence(s)
 	equalpythnotes.describe_sequence_markdown(m)
@@ -815,7 +815,7 @@ def main():
 
 	r = open("a_report.txt", "w")
 	s = open("a_sequence.txt", "w")
-	m = open("a_markdown.txt", "w")
+	m = open("a_markdown.md", "w")
 	anotes = ANotes()
 	anotes.describe_sequence(s)
 	anotes.describe_sequence_markdown(m)
@@ -823,7 +823,7 @@ def main():
 
 	r = open("path_report.txt", "w")
 	s = open("path_sequence.txt", "w")
-	m = open("path_markdown.txt", "w")
+	m = open("path_markdown.md", "w")
 	pathnotes = PATHNotes(True, True)
 	pathnotes.describe_sequence(s)
 	pathnotes.describe_sequence_markdown(m)
@@ -831,7 +831,7 @@ def main():
 
 	r = open("hybrid_report.txt", "w")
 	s = open("hybrid_sequence.txt", "w")
-	m = open("hybrid_markdown.txt", "w")
+	m = open("hybrid_markdown.md", "w")
 	hybridnotes = HybridNotes()
 	hybridnotes.describe_sequence(s)
 	hybridnotes.describe_sequence_markdown(m)
@@ -839,7 +839,7 @@ def main():
 
 	r = open("just_report.txt", "w")
 	s = open("just_sequence.txt", "w")
-	m = open("just_markdown.txt", "w")
+	m = open("just_markdown.md", "w")
 	justnotes = JustNotes()
 	justnotes.describe_sequence(s)
 	justnotes.describe_sequence_markdown(m)
@@ -847,7 +847,7 @@ def main():
 
 	r = open("stretch_report.txt", "w")
 	s = open("stretch_sequence.txt", "w")
-	m = open("stretch_markdown.txt", "w")
+	m = open("stretch_markdown.md", "w")
 	stretchjustnotes = StretchJustNotes()
 	stretchjustnotes.describe_sequence(s)
 	stretchjustnotes.describe_sequence_markdown(m)
