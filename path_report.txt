@@ -1004,3 +1004,244 @@
 7 17/16 percent obscured:  66.666667
 7 17/16 average path:      17.083333
 7 17/16 total:             12
+
+Fifths from each note in all octaves (MIDI 0-127):
+
+C: 7 fifths found
+C1: actual ratio 1.500059, diff from pure 3/2: +0.07 cents
+C2: actual ratio 1.500000, diff from pure 3/2: +0.00 cents
+C3: actual ratio 1.500835, diff from pure 3/2: +0.96 cents
+C4: actual ratio 1.500000, diff from pure 3/2: +0.00 cents
+C5: actual ratio 1.500000, diff from pure 3/2: +0.00 cents
+C6: actual ratio 1.498193, diff from pure 3/2: -2.09 cents
+C7: actual ratio 1.500000, diff from pure 3/2: +0.00 cents
+C: average deviation from pure 3/2: -0.15 cents
+
+C#: 7 fifths found
+C#1: actual ratio 1.500073, diff from pure 3/2: +0.08 cents
+C#2: actual ratio 1.500000, diff from pure 3/2: +0.00 cents
+C#3: actual ratio 1.500893, diff from pure 3/2: +1.03 cents
+C#4: actual ratio 1.500000, diff from pure 3/2: +0.00 cents
+C#5: actual ratio 1.500000, diff from pure 3/2: +0.00 cents
+C#6: actual ratio 1.498079, diff from pure 3/2: -2.22 cents
+C#7: actual ratio 1.500000, diff from pure 3/2: +0.00 cents
+C#: average deviation from pure 3/2: -0.16 cents
+
+D: 7 fifths found
+D1: actual ratio 1.500090, diff from pure 3/2: +0.10 cents
+D2: actual ratio 1.500000, diff from pure 3/2: +0.00 cents
+D3: actual ratio 1.502029, diff from pure 3/2: +2.34 cents
+D4: actual ratio 1.500000, diff from pure 3/2: +0.00 cents
+D5: actual ratio 1.500000, diff from pure 3/2: +0.00 cents
+D6: actual ratio 1.537913, diff from pure 3/2: +43.21 cents
+D7: actual ratio 1.500000, diff from pure 3/2: +0.00 cents
+D: average deviation from pure 3/2: +6.52 cents
+
+D#: 7 fifths found
+D#1: actual ratio 1.492037, diff from pure 3/2: -9.21 cents
+D#2: actual ratio 1.500000, diff from pure 3/2: +0.00 cents
+D#3: actual ratio 1.502173, diff from pure 3/2: +2.51 cents
+D#4: actual ratio 1.500000, diff from pure 3/2: +0.00 cents
+D#5: actual ratio 1.500000, diff from pure 3/2: +0.00 cents
+D#6: actual ratio 1.538755, diff from pure 3/2: +44.16 cents
+D#7: actual ratio 1.500000, diff from pure 3/2: +0.00 cents
+D#: average deviation from pure 3/2: +5.35 cents
+
+E: 7 fifths found
+E1: actual ratio 1.480869, diff from pure 3/2: -22.22 cents
+E2: actual ratio 1.500000, diff from pure 3/2: +0.00 cents
+E3: actual ratio 1.479796, diff from pure 3/2: -23.48 cents
+E4: actual ratio 1.500000, diff from pure 3/2: +0.00 cents
+E5: actual ratio 1.500265, diff from pure 3/2: +0.31 cents
+E6: actual ratio 1.480212, diff from pure 3/2: -22.99 cents
+E7: actual ratio 1.500000, diff from pure 3/2: +0.00 cents
+E: average deviation from pure 3/2: -9.77 cents
+
+F: 7 fifths found
+F1: actual ratio 1.500129, diff from pure 3/2: +0.15 cents
+F2: actual ratio 1.500000, diff from pure 3/2: +0.00 cents
+F3: actual ratio 1.500000, diff from pure 3/2: +0.00 cents
+F4: actual ratio 1.493700, diff from pure 3/2: -7.29 cents
+F5: actual ratio 1.500000, diff from pure 3/2: +0.00 cents
+F6: actual ratio 1.501987, diff from pure 3/2: +2.29 cents
+F7: actual ratio 1.500000, diff from pure 3/2: -0.00 cents
+F: average deviation from pure 3/2: -0.69 cents
+
+F#: 6 fifths found
+F#1: actual ratio 1.500142, diff from pure 3/2: +0.16 cents
+F#2: actual ratio 1.500000, diff from pure 3/2: +0.00 cents
+F#3: actual ratio 1.500000, diff from pure 3/2: -0.00 cents
+F#4: actual ratio 1.502030, diff from pure 3/2: +2.34 cents
+F#5: actual ratio 1.500000, diff from pure 3/2: +0.00 cents
+F#6: actual ratio 1.504348, diff from pure 3/2: +5.01 cents
+F#: average deviation from pure 3/2: +1.25 cents
+
+G: 6 fifths found
+G1: actual ratio 1.502447, diff from pure 3/2: +2.82 cents
+G2: actual ratio 1.500000, diff from pure 3/2: +0.00 cents
+G3: actual ratio 1.500000, diff from pure 3/2: +0.00 cents
+G4: actual ratio 1.506939, diff from pure 3/2: +7.99 cents
+G5: actual ratio 1.500000, diff from pure 3/2: +0.00 cents
+G6: actual ratio 1.500000, diff from pure 3/2: +0.00 cents
+G: average deviation from pure 3/2: +1.80 cents
+
+G#: 6 fifths found
+G#1: actual ratio 1.502621, diff from pure 3/2: +3.02 cents
+G#2: actual ratio 1.500000, diff from pure 3/2: -0.00 cents
+G#3: actual ratio 1.500000, diff from pure 3/2: +0.00 cents
+G#4: actual ratio 1.506944, diff from pure 3/2: +8.00 cents
+G#5: actual ratio 1.500000, diff from pure 3/2: +0.00 cents
+G#6: actual ratio 1.500000, diff from pure 3/2: +0.00 cents
+G#: average deviation from pure 3/2: +1.84 cents
+
+A: 7 fifths found
+A0: actual ratio 1.500191, diff from pure 3/2: +0.22 cents
+A1: actual ratio 1.500184, diff from pure 3/2: +0.21 cents
+A2: actual ratio 1.500000, diff from pure 3/2: +0.00 cents
+A3: actual ratio 1.478720, diff from pure 3/2: -24.74 cents
+A4: actual ratio 1.481220, diff from pure 3/2: -21.81 cents
+A5: actual ratio 1.500000, diff from pure 3/2: +0.00 cents
+A6: actual ratio 1.500000, diff from pure 3/2: +0.00 cents
+A: average deviation from pure 3/2: -6.59 cents
+
+A#: 7 fifths found
+A#0: actual ratio 1.500024, diff from pure 3/2: +0.03 cents
+A#1: actual ratio 1.500000, diff from pure 3/2: +0.00 cents
+A#2: actual ratio 1.491742, diff from pure 3/2: -9.56 cents
+A#3: actual ratio 1.500000, diff from pure 3/2: +0.00 cents
+A#4: actual ratio 1.502739, diff from pure 3/2: +3.16 cents
+A#5: actual ratio 1.500000, diff from pure 3/2: +0.00 cents
+A#6: actual ratio 1.500000, diff from pure 3/2: +0.00 cents
+A#: average deviation from pure 3/2: -0.91 cents
+
+B: 7 fifths found
+B0: actual ratio 1.500041, diff from pure 3/2: +0.05 cents
+B1: actual ratio 1.500000, diff from pure 3/2: +0.00 cents
+B2: actual ratio 1.480551, diff from pure 3/2: -22.59 cents
+B3: actual ratio 1.500000, diff from pure 3/2: +0.00 cents
+B4: actual ratio 1.509136, diff from pure 3/2: +10.51 cents
+B5: actual ratio 1.500000, diff from pure 3/2: +0.00 cents
+B6: actual ratio 1.500000, diff from pure 3/2: +0.00 cents
+B: average deviation from pure 3/2: -1.72 cents
+
+Major 3rds from each note in all octaves (MIDI 0-127):
+
+C: 7 major 3rds found
+C1: actual ratio 1.268249, diff from pure 5/4: +25.09 cents
+C2: actual ratio 1.268231, diff from pure 5/4: +25.07 cents
+C3: actual ratio 1.268130, diff from pure 5/4: +24.93 cents
+C4: actual ratio 1.250000, diff from pure 5/4: +0.00 cents
+C5: actual ratio 1.249779, diff from pure 5/4: -0.31 cents
+C6: actual ratio 1.264100, diff from pure 5/4: +19.42 cents
+C7: actual ratio 1.287081, diff from pure 5/4: +50.61 cents
+C: average deviation from pure 5/4: +20.69 cents
+
+C#: 7 major 3rds found
+C#1: actual ratio 1.261458, diff from pure 5/4: +15.80 cents
+C#2: actual ratio 1.261433, diff from pure 5/4: +15.76 cents
+C#3: actual ratio 1.261328, diff from pure 5/4: +15.62 cents
+C#4: actual ratio 1.268160, diff from pure 5/4: +24.97 cents
+C#5: actual ratio 1.268405, diff from pure 5/4: +25.31 cents
+C#6: actual ratio 1.266244, diff from pure 5/4: +22.35 cents
+C#7: actual ratio 1.296690, diff from pure 5/4: +63.49 cents
+C#: average deviation from pure 5/4: +26.18 cents
+
+D: 7 major 3rds found
+D1: actual ratio 1.250017, diff from pure 5/4: +0.02 cents
+D2: actual ratio 1.249985, diff from pure 5/4: -0.02 cents
+D3: actual ratio 1.251787, diff from pure 5/4: +2.47 cents
+D4: actual ratio 1.250353, diff from pure 5/4: +0.49 cents
+D5: actual ratio 1.251823, diff from pure 5/4: +2.52 cents
+D6: actual ratio 1.250000, diff from pure 5/4: -0.00 cents
+D7: actual ratio 1.248928, diff from pure 5/4: -1.48 cents
+D: average deviation from pure 5/4: +0.57 cents
+
+D#: 7 major 3rds found
+D#1: actual ratio 1.259343, diff from pure 5/4: +12.89 cents
+D#2: actual ratio 1.259304, diff from pure 5/4: +12.84 cents
+D#3: actual ratio 1.262135, diff from pure 5/4: +16.73 cents
+D#4: actual ratio 1.260577, diff from pure 5/4: +14.59 cents
+D#5: actual ratio 1.257015, diff from pure 5/4: +9.69 cents
+D#6: actual ratio 1.266877, diff from pure 5/4: +23.22 cents
+D#7: actual ratio 1.269547, diff from pure 5/4: +26.86 cents
+D#: average deviation from pure 5/4: +16.69 cents
+
+E: 7 major 3rds found
+E1: actual ratio 1.249951, diff from pure 5/4: -0.07 cents
+E2: actual ratio 1.249907, diff from pure 5/4: -0.13 cents
+E3: actual ratio 1.250730, diff from pure 5/4: +1.01 cents
+E4: actual ratio 1.268086, diff from pure 5/4: +24.87 cents
+E5: actual ratio 1.267920, diff from pure 5/4: +24.64 cents
+E6: actual ratio 1.250220, diff from pure 5/4: +0.30 cents
+E7: actual ratio 1.222719, diff from pure 5/4: -38.20 cents
+E: average deviation from pure 5/4: +1.78 cents
+
+F: 7 major 3rds found
+F1: actual ratio 1.268185, diff from pure 5/4: +25.00 cents
+F2: actual ratio 1.268130, diff from pure 5/4: +24.93 cents
+F3: actual ratio 1.267988, diff from pure 5/4: +24.74 cents
+F4: actual ratio 1.260309, diff from pure 5/4: +14.22 cents
+F5: actual ratio 1.264100, diff from pure 5/4: +19.42 cents
+F6: actual ratio 1.288786, diff from pure 5/4: +52.90 cents
+F7: actual ratio 1.234970, diff from pure 5/4: -20.94 cents
+F: average deviation from pure 5/4: +20.04 cents
+
+F#: 7 major 3rds found
+F#1: actual ratio 1.261552, diff from pure 5/4: +15.93 cents
+F#2: actual ratio 1.268311, diff from pure 5/4: +25.18 cents
+F#3: actual ratio 1.268160, diff from pure 5/4: +24.97 cents
+F#4: actual ratio 1.267806, diff from pure 5/4: +24.49 cents
+F#5: actual ratio 1.266244, diff from pure 5/4: +22.35 cents
+F#6: actual ratio 1.300449, diff from pure 5/4: +68.50 cents
+F#7: actual ratio 1.266933, diff from pure 5/4: +23.30 cents
+F#: average deviation from pure 5/4: +29.24 cents
+
+G: 7 major 3rds found
+G1: actual ratio 1.252025, diff from pure 5/4: +2.80 cents
+G2: actual ratio 1.268231, diff from pure 5/4: +25.07 cents
+G3: actual ratio 1.250353, diff from pure 5/4: +0.49 cents
+G4: actual ratio 1.250000, diff from pure 5/4: +0.00 cents
+G5: actual ratio 1.250000, diff from pure 5/4: +0.00 cents
+G6: actual ratio 1.248928, diff from pure 5/4: -1.48 cents
+G7: actual ratio 1.287081, diff from pure 5/4: +50.61 cents
+G: average deviation from pure 5/4: +11.07 cents
+
+G#: 7 major 3rds found
+G#1: actual ratio 1.261504, diff from pure 5/4: +15.86 cents
+G#2: actual ratio 1.261433, diff from pure 5/4: +15.76 cents
+G#3: actual ratio 1.260577, diff from pure 5/4: +14.59 cents
+G#4: actual ratio 1.262834, diff from pure 5/4: +17.68 cents
+G#5: actual ratio 1.268405, diff from pure 5/4: +25.31 cents
+G#6: actual ratio 1.269547, diff from pure 5/4: +26.86 cents
+G#7: actual ratio 1.296690, diff from pure 5/4: +63.49 cents
+G#: average deviation from pure 5/4: +25.65 cents
+
+A: 7 major 3rds found
+A0: actual ratio 1.250049, diff from pure 5/4: +0.07 cents
+A1: actual ratio 1.250060, diff from pure 5/4: +0.08 cents
+A2: actual ratio 1.249985, diff from pure 5/4: -0.02 cents
+A3: actual ratio 1.250096, diff from pure 5/4: +0.13 cents
+A4: actual ratio 1.252045, diff from pure 5/4: +2.83 cents
+A5: actual ratio 1.251823, diff from pure 5/4: +2.52 cents
+A6: actual ratio 1.222719, diff from pure 5/4: -38.20 cents
+A: average deviation from pure 5/4: -4.66 cents
+
+A#: 7 major 3rds found
+A#0: actual ratio 1.268129, diff from pure 5/4: +24.93 cents
+A#1: actual ratio 1.268130, diff from pure 5/4: +24.93 cents
+A#2: actual ratio 1.259304, diff from pure 5/4: +12.84 cents
+A#3: actual ratio 1.260309, diff from pure 5/4: +14.22 cents
+A#4: actual ratio 1.266409, diff from pure 5/4: +22.58 cents
+A#5: actual ratio 1.257015, diff from pure 5/4: +9.69 cents
+A#6: actual ratio 1.234970, diff from pure 5/4: -20.94 cents
+A#: average deviation from pure 5/4: +12.61 cents
+
+B: 7 major 3rds found
+B0: actual ratio 1.268319, diff from pure 5/4: +25.19 cents
+B1: actual ratio 1.268311, diff from pure 5/4: +25.18 cents
+B2: actual ratio 1.249907, diff from pure 5/4: -0.13 cents
+B3: actual ratio 1.267806, diff from pure 5/4: +24.49 cents
+B4: actual ratio 1.273956, diff from pure 5/4: +32.86 cents
+B5: actual ratio 1.267696, diff from pure 5/4: +24.34 cents
+B6: actual ratio 1.266933, diff from pure 5/4: +23.30 cents
+B: average deviation from pure 5/4: +22.17 cents
