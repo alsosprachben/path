@@ -84,11 +84,20 @@ class Note:
 			raise IndexError("reference parent note %i has no frequency" % parent.n)
 
 		if use_inharmonicity:
-			coeff = steinway_inharmonicity_coefficient_func(parent.f)
-			stretch = inharmonicity_coefficient_ratio(2, coeff) / 2
-			#print("stretch %f" % stretch)
-			f = float(parent.f) * n / d * stretch
-			#print("f %f -> %f" % (parent.f, f))
+			# Align an octave to the LOWER note's 2nd partial. Ascending (n >= d),
+			# the parent is the lower note, so stretch its 2nd partial upward.
+			# Descending (n < d), THIS note is the lower one, so it must be placed
+			# such that its OWN 2nd partial lands on the parent -- divide by the
+			# stretch evaluated at the (approximate) target frequency, rather than
+			# multiplying by the parent's stretch (which would drift the octave
+			# flat of the partial, accumulating down the bass).
+			base = float(parent.f) * n / d
+			if n >= d:
+				coeff = steinway_inharmonicity_coefficient_func(parent.f)
+				f = base * (inharmonicity_coefficient_ratio(2, coeff) / 2)
+			else:
+				coeff = steinway_inharmonicity_coefficient_func(base)
+				f = base / (inharmonicity_coefficient_ratio(2, coeff) / 2)
 		else:
 			f = float(parent.f) * n / d
 
