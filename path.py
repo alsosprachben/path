@@ -712,6 +712,112 @@ class HybridNotes(Notes):
 		B7  = B6.seq_tune(12, 2, 1, True)
 		C8  = C7.seq_tune(12, 2, 1, True)
 
+class HybridMeanNotes(Notes):
+	"""The hybrid's two chains of pure 5ths, bridged by a MEAN major 3rd.
+
+	HybridNotes bridges its chains (Bb2-A5 and B2-D#5) with a pure 5/4 3rd,
+	C4 to E4, which leaves one 5th -- A-E -- a syntonic comma narrow. Here
+	the chains start a tone higher, C3-B5 and C#3-F5, and the bridge is D4 to
+	F#4 by the geometric mean of 80/64 and 81/64 (397.07 cents), so the comma
+	splits over the two 5ths between the chains, B-F# and F-C, and there is
+	no wolf. That mean 3rd is the one irrational ratio: every other interval
+	is a pure 5th or 4th or an octave along the string's own inharmonicity,
+	and with inharmonic octaves the stretch absorbs part of the comma too.
+	"""
+	def __init__(self):
+		Notes.__init__(self)
+
+		self.init_chains()
+
+		self.init_octaves()
+
+	def init_chains(self):
+		# anchor C4 where A = 440 Hz, as HybridNotes does, via C3
+		C3 = self[48]
+		C3.set_frequency(440.0 * 2 ** (3 / 12.0) / 4)
+
+		# chain one: C3 to B5, pure 5ths
+		G3 = C3.seq_tune(7, 3, 2)
+		D4 = G3.seq_tune(7, 3, 2)
+		A4 = D4.seq_tune(7, 3, 2)
+		E5 = A4.seq_tune(7, 3, 2)
+		B5 = E5.seq_tune(7, 3, 2)
+
+		# the bridge: D4 to F#4 by the mean 3rd, sqrt(80/64 * 81/64)
+		Fs4 = self[66]
+		Fs4.set_parent(D4)
+		Fs4.set_frequency(D4.f * (80.0 * 81.0) ** 0.5 / 64.0)
+
+		# to chain two: F#4 up a pure 5th to C#5, then down two stretched octaves
+		# to C#3 -- the longer way round, so the octaves' inharmonicity takes more
+		# of the comma (the gap 5ths ease, and the bridged 3rds draw together)
+		Cs5 = Fs4.seq_tune(7, 3, 2)
+		Cs4 = Cs5.seq_tune(-12, 1, 2, True)
+		Cs3 = Cs4.seq_tune(-12, 1, 2, True)
+
+		# chain two: C#3 to F5, pure 5ths
+		Gs3 = Cs3.seq_tune(7, 3, 2)
+		Ds4 = Gs3.seq_tune(7, 3, 2)
+		As4 = Ds4.seq_tune(7, 3, 2)
+		F5 = As4.seq_tune(7, 3, 2)
+
+	def init_octaves(self, low = 12, high = 127):
+		# everything else by octaves along the natural inharmonicity, outward
+		# from the nearest note already tuned: up first, then down
+		for n in range(low, high + 1):
+			if self.notes[n].f is None and n - 12 >= 0 and self.notes[n - 12].f is not None:
+				self[n - 12].seq_tune(12, 2, 1, True)
+		for n in range(high, low - 1, -1):
+			if self.notes[n].f is None and self.notes[n + 12].f is not None:
+				self[n + 12].seq_tune(-12, 1, 2, True)
+
+
+class StretchedHelmholtzNotes(Notes):
+	"""Two chains of pure 5ths joined only by inharmonic octaves -- no bridge.
+
+	Chain two, F#2-C#3-G#3-D#4-A#4-F5-C6; then three octaves back down along
+	the string's own inharmonicity, C6 to C3; then chain one, C3-G3-D4-A4-E5-
+	B5. On harmonic strings this is Pythagorean with its comma on B-F#, and the
+	3rds on A, E and B are Helmholtz's schismatic ones: diminished 4ths, eight
+	5ths away, pure within a schisma. On a piano the three stretched octaves of
+	the wrap take part of the comma, and every 3rd eases with them. Tuned by
+	beatless 5ths and octaves alone: no reference but the pitch.
+	"""
+	def __init__(self):
+		Notes.__init__(self)
+
+		self.init_chains()
+
+		self.init_octaves()
+
+	def init_chains(self):
+		# anchor so A4 lands near 440 (rescaled by the tuner anyway)
+		Cs3 = self[49]
+		Cs3.set_frequency(440.0 * 2 ** (-20 / 12.0))
+
+		# chain two: F#2 to C6, pure 5ths
+		Fs2 = Cs3.seq_tune(-7, 2, 3)
+		Gs3 = Cs3.seq_tune(7, 3, 2)
+		Ds4 = Gs3.seq_tune(7, 3, 2)
+		As4 = Ds4.seq_tune(7, 3, 2)
+		F5 = As4.seq_tune(7, 3, 2)
+		C6 = F5.seq_tune(7, 3, 2)
+
+		# wrap back three octaves along the inharmonicity, C6 to C3
+		C5 = C6.seq_tune(-12, 1, 2, True)
+		C4 = C5.seq_tune(-12, 1, 2, True)
+		C3 = C4.seq_tune(-12, 1, 2, True)
+
+		# chain one: C3 to B5, pure 5ths
+		G3 = C3.seq_tune(7, 3, 2)
+		D4 = G3.seq_tune(7, 3, 2)
+		A4 = D4.seq_tune(7, 3, 2)
+		E5 = A4.seq_tune(7, 3, 2)
+		B5 = E5.seq_tune(7, 3, 2)
+
+	init_octaves = HybridMeanNotes.init_octaves
+
+
 class SemiNotes(Notes):
 	def __init__(self):
 		Notes.__init__(self)
@@ -1326,6 +1432,22 @@ def main():
 	hybridnotes.describe_sequence(s)
 	hybridnotes.describe_sequence_markdown(m)
 	hybridnotes.report(r)
+
+	r = open("hybridmean_report.txt", "w")
+	s = open("hybridmean_sequence.txt", "w")
+	m = open("hybridmean_markdown.md", "w")
+	hybridmeannotes = HybridMeanNotes()
+	hybridmeannotes.describe_sequence(s)
+	hybridmeannotes.describe_sequence_markdown(m)
+	hybridmeannotes.report(r)
+
+	r = open("stretchedhelmholtz_report.txt", "w")
+	s = open("stretchedhelmholtz_sequence.txt", "w")
+	m = open("stretchedhelmholtz_markdown.md", "w")
+	shnotes = StretchedHelmholtzNotes()
+	shnotes.describe_sequence(s)
+	shnotes.describe_sequence_markdown(m)
+	shnotes.report(r)
 
 	r = open("semi_report.txt", "w")
 	s = open("semi_sequence.txt", "w")
